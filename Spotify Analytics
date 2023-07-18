@@ -41,3 +41,21 @@ FROM spotifydata
 GROUP BY artist_name
 ORDER BY amount_of_tracks DESC
 LIMIT 3;
+
+-- 6. Create a CTE to select and label artists with at least an average popularity of 90 as Top Star
+
+WITH popularity_average_cte AS 
+(
+SELECT 
+    artist_name, 
+    AVG(popularity) AS average_popularity
+FROM Spotifydata
+GROUP BY artist_name
+)
+
+SELECT 
+    artist_name,
+    average_popularity,
+    'Top Star' AS tag
+FROM popularity_average_cte 
+WHERE average_popularity >= 90;
