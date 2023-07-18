@@ -1,0 +1,43 @@
+#In this SQL, I'm querying a database with the top 50 songs on Spotify in 2021
+
+-- 1. Organize each song by duration in minutes and categorize them
+
+SELECT artist_name, track_name, ((duration_ms / 1000) / 60) AS duration_minutes,
+     CASE
+         WHEN ((duration_ms / 1000) / 60) >= 4 THEN 'Long'
+         WHEN ((duration_ms / 1000) / 60) >= 3 THEN 'Medium'
+    ELSE 'Short'
+END AS length_category
+FROM spotifydata
+ORDER BY duration_minutes;
+
+-- 2. Who are the top 10 artists based on average popularity of song?
+
+SELECT artist_name, AVG(popularity)
+FROM spotifydata
+GROUP BY artist_name
+ORDER BY AVG(popularity) DESC
+LIMIT 10;
+
+-- 3. What artist released the longest song?
+
+SELECT artist_name, track_name, ((duration_ms / 1000) / 60) AS duration_minutes
+FROM spotifydata
+ORDER BY duration_ms DESC
+LIMIT 1;
+
+-- 4. What are the top 10 based on popularity?
+
+SELECT artist_name, track_name
+FROM spotifydata
+ORDER BY popularity DESC
+LIMIT 10;
+
+
+-- 5. Which three artists have the most amount of songs in the top 50?
+
+SELECT artist_name, COUNT(artist_name) AS amount_of_tracks
+FROM spotifydata
+GROUP BY artist_name
+ORDER BY amount_of_tracks DESC
+LIMIT 3;
