@@ -1,3 +1,5 @@
+-- In this repository I create a table of potential items in a grocery store including several variables. 
+
 CREATE TABLE store (id integer primary key, name text, price integer, aisle integer, weight integer);
 
 INSERT INTO store VALUES (1, "Phone", 500, 3, 7);
