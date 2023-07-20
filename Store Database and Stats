@@ -1,4 +1,4 @@
--- In this repository I create a table of potential items in a grocery store including several variables. 
+#In this SQL, I create a table of potential store items with several variables one may need. 
 
 CREATE TABLE store (id integer primary key, name text, price integer, aisle integer, weight integer);
 
