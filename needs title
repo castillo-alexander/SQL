@@ -1,0 +1,170 @@
+a lot of hard work later:
+
+-- 1. Show customers (their full names, customer ID, and country) who are not in the U.S.
+
+SELECT
+    firstname,
+    lastname,
+    customerID,
+    country
+FROM chinook.customers
+WHERE country != 'USA';
+
+-- 2. Show only the customers from Brazil.
+
+SELECT *
+FROM chinook.customers
+WHERE country = 'Brazil';
+
+-- 3. Find the invoices of customers who are from Brazil. The resulting table should show the customer's full name, Invoice ID, Date of invoice, and billing country.
+
+SELECT
+    cc.firstname,
+    cc.lastname,
+    ci.invoiceid,
+    ci.invoicedate,
+    ci.billingcountry
+FROM chinook.customers cc
+JOIN chinook.invoices ci 
+    USING (customerID)
+WHERE ci.billingcountry = 'Brazil';
+
+-- 4. Show the Employees who are Sales Agents.
+
+SELECT *
+FROM chinook.employees
+WHERE title = 'Sales Support Agent';
+
+-- 5. Find a unique/distinct list of billing countries from the Invoice table and put them in alphabetical order.
+
+SELECT DISTINCT(billingcountry) AS billing_countries
+FROM chinook.invoices
+ORDER BY billing_countries;
+
+-- 6. Provide a query that shows the invoices associated with each sales agent. The resulting table should include the Sales Agent's full name.
+
+SELECT
+    ce.firstname AS sales_agent_first_name,
+    ce.lastname AS sales_agent_last_name,
+    ci.invoiceid,
+    ci.invoicedate,
+    ci.total AS invoice_total
+FROM chinook.customers cc
+JOIN chinook.employees ce
+    ON cc.supportrepid = ce.employeeid
+JOIN chinook.invoices ci 
+    USING (customerid);
+
+-- 7. Show the Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers.
+
+SELECT 
+    ci.total AS invoice_total,
+    cc.firstname AS customer_firstname,
+    cc.lastname AS customer_lastname,
+    cc.country AS country,
+    ce.firstname AS sales_agent_firstname,
+    ce.lastname AS sales_agent_lastname
+FROM chinook.invoices ci
+JOIN chinook.customers cc 
+    USING (customerid)
+JOIN chinook.employees ce
+    ON cc.supportrepid = ce.employeeid;
+
+-- 8. How many Invoices were there in 2009?
+
+SELECT
+    COUNT(invoiceid) AS invoice_count_2009
+FROM chinook.invoices
+WHERE invoicedate BETWEEN '2009-01-01' AND '2009-12-31';
+
+-- 9. What are the total sales for 2009?
+
+SELECT
+    SUM(total) AS total_sales_2009
+FROM chinook.invoices
+WHERE invoicedate BETWEEN '2009-01-01' AND '2009-12-31';
+
+-- 10. Write a query that includes the purchased track name with each invoice line ID.
+
+SELECT 
+    ii.invoicelineid,
+    t.name AS track_name
+FROM invoice_items ii
+JOIN tracks t 
+    USING (trackid)
+ORDER BY ii.invoicelineid;
+
+
+-- 11. Write a query that includes the purchased track name AND artist name with each invoice line ID.
+
+SELECT
+    t.name AS track_name,
+    art.name AS artist_name,
+    it.invoicelineid AS invoicelineid
+FROM tracks t
+JOIN invoice_items it
+    USING (trackid)
+JOIN albums alb
+    USING (albumid)
+JOIN artists art
+    USING (artistid);
+
+-- 12. Provide a query that shows all the Tracks, and include the Album name, Media type, and Genre.
+
+SELECT
+    t.name AS track_name,
+    alb.title AS album_name,
+    mt.name AS media_type,
+    g.name AS genre
+FROM tracks t
+JOIN albums alb 
+    USING (albumid)
+JOIN media_types mt
+    USING (mediatypeid)
+JOIN genres g
+    USING (genreid);
+
+-- 13. Show the total sales made by each sales agent.
+
+SELECT
+    e.firstname AS sales_agent_firstname,
+    e.lastname AS sales_agent_lastname,
+    ROUND(SUM(total), 2) AS total_sales
+FROM customers c
+JOIN invoices i
+    USING (customerID)
+JOIN employees e
+    ON c.supportrepid = e.employeeid
+GROUP BY c.supportrepid;
+
+-- 14. Which sales agent made the most dollars in sales in 2009?
+
+SELECT
+    e.firstname AS sales_agent_firstname,
+    e.lastname AS sales_agent_lastname,
+    ROUND(SUM(total), 2) AS total_sales_2009
+FROM customers c
+JOIN invoices i
+    USING (customerID)
+JOIN employees e
+    ON c.supportrepid = e.employeeid
+WHERE invoicedate BETWEEN '2009-01-01' AND '2009-12-31'
+GROUP BY c.supportrepid
+ORDER BY SUM(total) DESC
+LIMIT 1;
+
+-- 15. Find out how many tracks each genre had, include total sales for each one and order them from most to least sales.
+
+SELECT 
+    g.name AS genre,
+    COUNT(t.name) AS amount_of_tracks,
+    ROUND(SUM(i.total), 2) AS total_sales
+FROM tracks t
+JOIN genres g
+    USING (genreid)
+JOIN invoice_items ii
+    USING (trackid)
+JOIN invoices i
+    USING (invoiceid)
+GROUP BY g.genreid
+ORDER BY SUM(i.total) DESC;
