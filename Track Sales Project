@@ -1,5 +1,6 @@
 # In this SQL I am querying a table which includes multiple variables for a _____. 
 
+
 -- 1. Show customers (their full names, customer ID, and country) who are not in the U.S.
 
 SELECT
