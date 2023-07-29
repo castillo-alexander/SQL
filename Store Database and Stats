@@ -18,6 +18,3 @@ INSERT INTO store VALUES (12, "Napkins", 2, 16, 1);
 INSERT INTO store VALUES (13, "Pillows", 12, 12, 4);
 INSERT INTO store VALUES (14, "Squishmallow", 8, 11, 2);
 INSERT INTO store VALUES (15, "HydroFlask", 40, 15, 2);
-
-SELECT * FROM store WHERE price > 10 ORDER BY price desc 
-
