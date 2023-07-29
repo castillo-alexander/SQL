@@ -1,6 +1,7 @@
-#In this SQL, I'm querying a database with the top 50 songs on Spotify in 2021
+#In this SQL, I'm querying a database with the top 50 songs on Spotify in 2021.
 
--- 1. Organize each song by duration in minutes and categorize them
+
+-- 1. Organize each song by duration in minutes and categorize them.
 
 SELECT artist_name, track_name, ((duration_ms / 1000) / 60) AS duration_minutes,
      CASE
@@ -32,7 +33,6 @@ SELECT artist_name, track_name
 FROM spotifydata
 ORDER BY popularity DESC
 LIMIT 10;
-
 
 -- 5. Which three artists have the most amount of songs in the top 50?
 
