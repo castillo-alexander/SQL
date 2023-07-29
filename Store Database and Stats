@@ -1,5 +1,6 @@
 #In this SQL, I create a table of potential store items with several variables one may need.
 
+
 CREATE TABLE store (id integer primary key, name text, price integer, aisle integer, weight integer);
 
 INSERT INTO store VALUES (1, "Phone", 500, 3, 7);
@@ -19,3 +20,4 @@ INSERT INTO store VALUES (14, "Squishmallow", 8, 11, 2);
 INSERT INTO store VALUES (15, "HydroFlask", 40, 15, 2);
 
 SELECT * FROM store WHERE price > 10 ORDER BY price desc 
+
